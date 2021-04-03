@@ -2,10 +2,10 @@
   "name": "driver",
   "version": "1.0.0",
   "description": "## Project: caps.driver.vender",
-  "main": "index.js",
+  "main": "driver.js",
   "scripts": {
     "test": "jest --coverage",
-    "start": "node index.js"
+    "start": "node driver.js"
   },
   "repository": {
     "type": "git",
