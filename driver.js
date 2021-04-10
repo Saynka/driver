@@ -6,21 +6,45 @@ const socket = io.connect(host);
 const capsSocket = io.connect(`${host}/caps`);
 require('dotenv').config();
 
-capsSocket.on('pickup', pickUp)
-capsSocket.on('in-transit', inTransit)
+capsSocket.emit('getAll');
 
-function pickUp(payload) {
+capsSocket.on('pickup', payload => {
   setTimeout(() => {
-    console.log(`PICKED UP: ORDER ID ${payload.fake.orderId}`)
-    capsSocket.emit('in-transit', payload)
-  }, 1000)
-}
+    socket.emit('received', payload);
+    console.log(`NEW-ORDER *****: ${payload.orderId} PICK-UP @ ${payload.address} PHONE: ${payload.phoneNumber}`);
+    capsSocket.emit('in-transit', payload);
+  }, 4000);
+});
 
-function inTransit(payload) {
+
+capsSocket.on('in-transit', payload => {
   setTimeout(() => {
-    console.log(`ITEM IN TRANSIT: ORDER NUMBER: ${payload.fake.orderId}\n`)
-    capsSocket.emit('delivered', payload)
-  }, 3000)
-}
+    capsSocket.emit('pickup', payload),
+      capsSocket.emit('delivered', payload);
+  }, 10000);
+});
+
+capsSocket.on('delivered', payload => {
+  setTimeout(() => {
+    console.log(`ORDER *****: ${payload.orderId} HAS BEEN DELIVERED @ ${payload.address} PHONE: ${payload.phoneNumber}`);
+  }, 6000);
+});
+
+console.log('DRIVERS-LIVE');
+
+
+// function pickUp(payload) {
+//   setTimeout(() => {
+//     console.log(`PICKED UP: ORDER ID ${payload.fake.orderId}`)
+//     capsSocket.emit('in-transit', payload)
+//   }, 1000)
+// }
+
+// function inTransit(payload) {
+//   setTimeout(() => {
+//     console.log(`ITEM IN TRANSIT: ORDER NUMBER: ${payload.fake.orderId}\n`)
+//     capsSocket.emit('delivered', payload)
+//   }, 3000)
+// }
 
 
