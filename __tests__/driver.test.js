@@ -11,10 +11,10 @@ afterAll(() => {
 describe('should test vendor.js console log', () => {
 
   it('checks new order console.logs', () => {
-    driver.pickUp();
+    driver.;
     setTimeout(() => {
       expect(logSpy).toHaveBeenCalled()
-    }, 2000)
+    }, 5000)
   });
 
   it('checks delievered console.logs', () => {
